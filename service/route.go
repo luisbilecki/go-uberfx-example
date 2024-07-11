@@ -1,4 +1,4 @@
-package routes
+package service
 
 import (
 	"net/http"
@@ -6,8 +6,8 @@ import (
 	"github.com/luisbilecki/go-uberfx-example/handler"
 )
 
-func NewEchoRoute(echo *handler.EchoHandler) *http.ServeMux {
+func NewServeMux(route handler.Route) *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.Handle("/echo", echo)
+	mux.Handle(route.Pattern(), route)
 	return mux
 }

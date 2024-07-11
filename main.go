@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/luisbilecki/go-uberfx-example/handler"
-	routes "github.com/luisbilecki/go-uberfx-example/route"
 	"github.com/luisbilecki/go-uberfx-example/service"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
@@ -18,8 +17,11 @@ func main() {
 		}),
 		fx.Provide(
 			service.NewHTTPServer,
-			routes.NewEchoRoute,
-			handler.NewEchoHandler,
+			service.NewServeMux,
+			fx.Annotate(
+				handler.NewEchoHandler,
+				fx.As(new(handler.Route)),
+			),
 			zap.NewProduction,
 		),
 		fx.Invoke(func(*http.Server) {}),
