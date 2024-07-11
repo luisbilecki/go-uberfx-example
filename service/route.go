@@ -6,8 +6,10 @@ import (
 	"github.com/luisbilecki/go-uberfx-example/handler"
 )
 
-func NewServeMux(route1, route2 handler.Route) *http.ServeMux {
+func NewServeMux(routes []handler.Route) *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.Handle(route1.Pattern(), route1)
+	for _, route := range routes {
+		mux.Handle(route.Pattern(), route)
+	}
 	return mux
 }
