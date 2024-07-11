@@ -17,10 +17,19 @@ func main() {
 		}),
 		fx.Provide(
 			service.NewHTTPServer,
-			service.NewServeMux,
+			fx.Annotate(
+				service.NewServeMux,
+				fx.ParamTags(`name:"echo"`, `name:"hello"`),
+			),
 			fx.Annotate(
 				handler.NewEchoHandler,
 				fx.As(new(handler.Route)),
+				fx.ResultTags(`name:"echo"`),
+			),
+			fx.Annotate(
+				handler.NewHelloHandler,
+				fx.As(new(handler.Route)),
+				fx.ResultTags(`name:"hello"`),
 			),
 			zap.NewProduction,
 		),
