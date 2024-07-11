@@ -9,8 +9,8 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewHTTPServer(lc fx.Lifecycle) *http.Server {
-	srv := &http.Server{Addr: ":8080"}
+func NewHTTPServer(lc fx.Lifecycle, mux *http.ServeMux) *http.Server {
+	srv := &http.Server{Addr: ":8080", Handler: mux}
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			ln, err := net.Listen("tcp", srv.Addr)
